@@ -135,9 +135,9 @@ type Keyspace struct {
 	// shards inside this keyspace. Ignored if redirect is set.
 	Shards []*Shard `protobuf:"bytes,2,rep,name=shards,proto3" json:"shards,omitempty"`
 	// number of replica tablets to instantiate. This includes the primary tablet.
-	ReplicaCount int32 `protobuf:"varint,6,opt,name=replica_count,json=replicaCount,proto3" json:"replica_count,omitempty"`
+	ReplicaCount int32 `protobuf:"varint,6,opt,name=replica_count,default=1,json=replicaCount,proto3" json:"replica_count,omitempty"`
 	// number of rdonly tablets to instantiate.
-	RdonlyCount int32 `protobuf:"varint,7,opt,name=rdonly_count,json=rdonlyCount,proto3" json:"rdonly_count,omitempty"`
+	RdonlyCount int32 `protobuf:"varint,7,opt,name=rdonly_count,default=1,json=rdonlyCount,proto3" json:"rdonly_count,omitempty"`
 }
 
 func (x *Keyspace) Reset() {

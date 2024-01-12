@@ -323,16 +323,6 @@ func CreateKs(
 				dbname = fmt.Sprintf("vt_%v_%v", keyspace, shard)
 			}
 
-			replicas := int(kpb.ReplicaCount)
-			if replicas == 0 {
-				// 2 replicas in order to ensure the primary cell has a primary and a replica
-				replicas = 2
-			}
-			rdonlys := int(kpb.RdonlyCount)
-			if rdonlys == 0 {
-				rdonlys = 1
-			}
-
 			if ensureDatabase {
 				// Create Database if not exist
 				conn, err := mysqld.GetDbaConnection(context.TODO())
@@ -345,11 +335,9 @@ func CreateKs(
 				if err != nil {
 					return 0, fmt.Errorf("error ensuring database exists: %v", err)
 				}
-
 			}
-			if cell == tpb.Cells[0] {
-				replicas--
 
+			if cell == tpb.Cells[0] {
 				// create the primary
 				if err := CreateTablet(ctx, ts, cell, uid, keyspace, shard, dbname, topodatapb.TabletType_PRIMARY, mysqld, dbcfgs.Clone(), collationEnv, parser, mysqlVersion); err != nil {
 					return 0, err
@@ -357,6 +345,7 @@ func CreateKs(
 				uid++
 			}
 
+			replicas := int(kpb.ReplicaCount)
 			for i := 0; i < replicas; i++ {
 				// create a replica tablet
 				if err := CreateTablet(ctx, ts, cell, uid, keyspace, shard, dbname, topodatapb.TabletType_REPLICA, mysqld, dbcfgs.Clone(), collationEnv, parser, mysqlVersion); err != nil {
@@ -365,6 +354,7 @@ func CreateKs(
 				uid++
 			}
 
+			rdonlys := int(kpb.RdonlyCount)
 			for i := 0; i < rdonlys; i++ {
 				// create a rdonly tablet
 				if err := CreateTablet(ctx, ts, cell, uid, keyspace, shard, dbname, topodatapb.TabletType_RDONLY, mysqld, dbcfgs.Clone(), collationEnv, parser, mysqlVersion); err != nil {
