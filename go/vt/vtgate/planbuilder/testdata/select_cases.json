@@ -1129,7 +1129,7 @@
           "Sharded": true
         },
         "FieldQuery": "select user0_.col as col0_ from `user` as user0_ where 1 != 1",
-        "Query": "select user0_.col as col0_ from `user` as user0_ where id = 1 order by col0_ desc limit 3",
+        "Query": "select user0_.col as col0_ from `user` as user0_ where id = 1 order by user0_.col desc limit 3",
         "Table": "`user`",
         "Values": [
           "INT64(1)"
@@ -2023,6 +2023,7 @@
   {
     "comment": "select (select col from user limit 1) as a from user join user_extra order by a",
     "query": "select (select col from user limit 1) as a from user join user_extra order by a",
+<<<<<<< HEAD
     "plan": {
       "QueryType": "SELECT",
       "Original": "select (select col from user limit 1) as a from user join user_extra order by a",
@@ -2090,6 +2091,9 @@
         "user.user_extra"
       ]
     }
+=======
+    "plan": "VT12001: unsupported: correlated subquery is only supported for EXISTS"
+>>>>>>> 4bc68db9d3 (bugfix: Columns alias expanding (#14935))
   },
   {
     "comment": "select t.a from (select (select col from user limit 1) as a from user join user_extra) t",
@@ -4787,7 +4791,7 @@
             },
             "FieldQuery": "select u.foo, weight_string(u.foo) from `user` as u where 1 != 1",
             "OrderBy": "(0|1) ASC",
-            "Query": "select u.foo, weight_string(u.foo) from `user` as u order by foo asc",
+            "Query": "select u.foo, weight_string(u.foo) from `user` as u order by u.foo asc",
             "Table": "`user`"
           },
           {

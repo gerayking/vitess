@@ -52,11 +52,15 @@ func (d *Distinct) planOffsets(ctx *plancontext.PlanningContext) error {
 		return err
 	}
 	for idx, col := range columns {
+<<<<<<< HEAD
 		e, err := d.QP.GetSimplifiedExpr(ctx, col.Expr)
 		if err != nil {
 			// ambiguous columns are not a problem for DISTINCT
 			e = col.Expr
 		}
+=======
+		e := col.Expr
+>>>>>>> 4bc68db9d3 (bugfix: Columns alias expanding (#14935))
 		var wsCol *int
 		typ, coll, _ := ctx.SemTable.TypeForExpr(e)
 

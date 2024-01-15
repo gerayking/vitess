@@ -186,11 +186,19 @@ func transformAggregator(ctx *plancontext.PlanningContext, op *operators.Aggrega
 		oa.aggregates = append(oa.aggregates, aggrParam)
 	}
 	for _, groupBy := range op.Grouping {
+<<<<<<< HEAD
 		typ, col, _ := ctx.SemTable.TypeForExpr(groupBy.SimplifiedExpr)
 		oa.groupByKeys = append(oa.groupByKeys, &engine.GroupByParams{
 			KeyCol:          groupBy.ColOffset,
 			WeightStringCol: groupBy.WSOffset,
 			Expr:            groupBy.AsAliasedExpr().Expr,
+=======
+		typ, _ := ctx.SemTable.TypeForExpr(groupBy.Inner)
+		oa.groupByKeys = append(oa.groupByKeys, &engine.GroupByParams{
+			KeyCol:          groupBy.ColOffset,
+			WeightStringCol: groupBy.WSOffset,
+			Expr:            groupBy.Inner,
+>>>>>>> 4bc68db9d3 (bugfix: Columns alias expanding (#14935))
 			Type:            typ,
 			CollationID:     col,
 		})

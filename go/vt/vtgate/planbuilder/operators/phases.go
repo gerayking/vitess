@@ -157,7 +157,7 @@ func addOrderBysForAggregations(ctx *plancontext.PlanningContext, root ops.Opera
 
 func needsOrdering(ctx *plancontext.PlanningContext, in *Aggregator) (bool, error) {
 	requiredOrder := slice.Map(in.Grouping, func(from GroupBy) sqlparser.Expr {
-		return from.SimplifiedExpr
+		return from.Inner
 	})
 	if in.DistinctExpr != nil {
 		requiredOrder = append(requiredOrder, in.DistinctExpr)
@@ -201,7 +201,11 @@ func addLiteralGroupingToRHS(in *ApplyJoin) (ops.Operator, *rewrite.ApplyResult,
 		}
 		if len(aggr.Grouping) == 0 {
 			gb := sqlparser.NewIntLiteral(".0")
+<<<<<<< HEAD
 			aggr.Grouping = append(aggr.Grouping, NewGroupBy(gb, gb, aeWrap(gb)))
+=======
+			aggr.Grouping = append(aggr.Grouping, NewGroupBy(gb))
+>>>>>>> 4bc68db9d3 (bugfix: Columns alias expanding (#14935))
 		}
 		return nil
 	})
