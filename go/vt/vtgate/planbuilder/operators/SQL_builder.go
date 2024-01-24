@@ -401,8 +401,8 @@ func buildDelete(op *Delete, qb *queryBuilder) {
 		Targets:    sqlparser.TableNames{op.Target.Name},
 		TableExprs: sel.From,
 		Where:      sel.Where,
-		OrderBy:    op.OrderBy,
-		Limit:      op.Limit,
+		Limit:      sel.Limit,
+		OrderBy:    sel.OrderBy,
 	}
 }
 
@@ -457,7 +457,7 @@ func buildAggregation(op *Aggregator, qb *queryBuilder) {
 
 	for _, by := range op.Grouping {
 		qb.addGroupBy(by.Inner)
-		simplified := by.SimplifiedExpr
+		simplified := by.Inner
 		if by.WSOffset != -1 {
 			qb.addGroupBy(weightStringFor(simplified))
 		}
