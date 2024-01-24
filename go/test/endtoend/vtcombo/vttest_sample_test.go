@@ -55,7 +55,7 @@ var (
 			"name": "test_keyspace",
 			"shards": [{"name": "-80"}, {"name": "80-"}],
 			"rdonlyCount": 1,
-			"replicaCount": 1
+			"replicaCount": 2
 		},
 		{
 			"name": "routed",

@@ -57,7 +57,7 @@ func TestMain(m *testing.M) {
 					{Name: "80-"},
 				},
 				RdonlyCount:  1,
-				ReplicaCount: 1,
+				ReplicaCount: 2,
 			},
 			{
 				Name: redirected,

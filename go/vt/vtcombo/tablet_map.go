@@ -337,20 +337,22 @@ func CreateKs(
 				}
 			}
 
-			if cell == tpb.Cells[0] {
-				// create the primary
-				if err := CreateTablet(ctx, ts, cell, uid, keyspace, shard, dbname, topodatapb.TabletType_PRIMARY, mysqld, dbcfgs.Clone(), collationEnv, parser, mysqlVersion); err != nil {
-					return 0, err
-				}
-				uid++
-			}
-
 			replicas := int(kpb.ReplicaCount)
 			for i := 0; i < replicas; i++ {
-				// create a replica tablet
-				if err := CreateTablet(ctx, ts, cell, uid, keyspace, shard, dbname, topodatapb.TabletType_REPLICA, mysqld, dbcfgs.Clone(), collationEnv, parser, mysqlVersion); err != nil {
+				var tabletType topodatapb.TabletType
+
+				if i == 0 && cell == tpb.Cells[0] {
+					// create the primary
+					tabletType = topodatapb.TabletType_PRIMARY
+				} else {
+					// create a replica tablet
+					tabletType = topodatapb.TabletType_REPLICA
+				}
+
+				if err := CreateTablet(ctx, ts, cell, uid, keyspace, shard, dbname, tabletType, mysqld, dbcfgs.Clone(), collationEnv, parser, mysqlVersion); err != nil {
 					return 0, err
 				}
+
 				uid++
 			}
 
